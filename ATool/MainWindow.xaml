@@ -1,0 +1,68 @@
+﻿<controls:MetroWindow x:Class="ATool.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      SaveWindowPosition="True"
+                      xmlns:tv="clr-namespace:TableView;assembly=TableView"
+                      Title="小工具" 
+                      Height="600" 
+                      xmlns:aTool="clr-namespace:ATool"
+                      Width="1024" Icon="images/tool.ico" BorderThickness="1">
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Content="设置类别" x:Name="btnType" Click="BtnType_OnClick"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border BorderThickness="0,0.5,0.5,0.5" BorderBrush="CornflowerBlue">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <ComboBox Width="150" Height="25" Margin="8,4" >
+                        <ComboBoxItem x:Name="cboNormal" IsSelected="true" >常规格式</ComboBoxItem>
+                        <ComboBoxItem x:Name="cboCross" >交叉表格式</ComboBoxItem>
+                    </ComboBox>
+                    <Button Content="打开文件" Width="120" Margin="8,4" x:Name="btnOpenFile" Click="BtnOpenFile_OnClick"/>
+                    <Button Content="导出" Width="120" Margin="8,4" x:Name="btnExport" Click="BtnExport_OnClick"/>
+                </StackPanel>
+            </Border>
+            <tv:TableView Grid.Row="1" x:Name="tvNorMal" CellNavigation="False" BorderThickness="1" BorderBrush="CornflowerBlue" Margin="2" 
+                  ShowHorizontalGridLines="True" Visibility="{Binding ElementName=cboNormal,Path=IsSelected,Converter={StaticResource BooleanToVisibilityConverter}}"
+                  ShowVerticalGridLines="True" 
+                  GridLinesBrush="DarkGray">
+                    <tv:TableView.Columns>
+                        <tv:TableViewColumn Title="姓名" ContextBinding="{Binding DoctorName}" Width="100"/>
+                        <tv:TableViewColumn Title="类别" ContextBinding="{Binding Medicine.StrName}" Width="250"/>
+                        <tv:TableViewColumn Title="数量" ContextBinding="{Binding Number}" Width="100"/>
+                        <tv:TableViewColumn Title="费用总计" ContextBinding="{Binding SumPrice}" Width="100"/>
+                </tv:TableView.Columns>
+            </tv:TableView>
+            <tv:TableView Grid.Row="1" x:Name="tvCross" CellNavigation="False" BorderThickness="1" BorderBrush="CornflowerBlue" Margin="2" 
+                  ShowHorizontalGridLines="True" Visibility="{Binding ElementName=cboCross,Path=IsSelected,Converter={StaticResource BooleanToVisibilityConverter}}"
+                  ShowVerticalGridLines="True" FontFamily="SimHei" FontSize="14"
+                  GridLinesBrush="DarkGray">
+            </tv:TableView>
+        </Grid>
+        <Grid x:Name="gridOpenFile" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="200" />
+                <RowDefinition Height="1.2*" />
+            </Grid.RowDefinitions>
+            <Rectangle Fill="Black" Opacity="0.3" />
+            <Rectangle Fill="White" Grid.Row="1"/>
+            <Rectangle Fill="Black" Opacity="0.3" Grid.Row="2"/>
+            <TextBlock Text="正在处理文件" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-35,0,0" FontSize="14"/>
+            <controls:MetroProgressBar Grid.Row="1" Width="450" Height="25" Value="67" IsIndeterminate="True"/>
+        </Grid>
+        <controls:Flyout x:Name="fyType" Width="450" IsModal="True" Position="Right" Header="种类" Theme="Accent" >
+            <Grid>
+                <aTool:MedicineTypeView x:Name="medicineTypeView"/>
+            </Grid>
+        </controls:Flyout>
+    </Grid>
+</controls:MetroWindow>
+
